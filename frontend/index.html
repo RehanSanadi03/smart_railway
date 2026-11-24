@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Railway Management</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Smart Railway home"><span class="brand-mark">SR</span> Smart Railway</a>
+    <span class="top-note">Plan your next journey</span>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">RAIL TRAVEL, MADE SIMPLE</p>
+      <h1>Find your next train.</h1>
+      <p class="intro">Search scheduled services, check seat availability, and manage your booking.</p>
+      <form id="search-form" class="search-panel">
+        <label>From<select name="origin" id="origin" required><option value="">Choose station</option></select></label>
+        <label>To<select name="destination" id="destination" required><option value="">Choose station</option></select></label>
+        <label>Journey date<input name="date" type="date" required></label>
+        <button class="primary" type="submit">Search trains <span aria-hidden="true">→</span></button>
+      </form>
+      <div class="quick-routes">
+        <span class="muted">Popular routes:</span>
+        <button type="button" class="route-pill" data-origin="SBC" data-destination="NDLS">Bengaluru → Delhi</button>
+        <button type="button" class="route-pill" data-origin="NDLS" data-destination="SBC">Delhi → Bengaluru</button>
+        <button type="button" class="route-pill" data-origin="MAS" data-destination="MYS">Chennai → Mysuru</button>
+        <button type="button" class="route-pill" data-origin="MYS" data-destination="MAS">Mysuru → Chennai</button>
+        <button type="button" class="route-pill" data-origin="MMCT" data-destination="NDLS">Mumbai → Delhi</button>
+        <button type="button" class="route-pill" data-origin="NDLS" data-destination="MMCT">Delhi → Mumbai</button>
+        <button type="button" class="route-pill" data-origin="NDLS" data-destination="RKMP">Delhi → Bhopal</button>
+        <button type="button" class="route-pill" data-origin="BGM" data-destination="SBC">Belagavi → Bengaluru</button>
+        <button type="button" class="route-pill" data-origin="PUNE" data-destination="MMCT">Pune → Mumbai</button>
+      </div>
+    </section>
+
+    <section id="notice" class="notice" role="status" hidden></section>
+    <section id="results-section" class="results-section" hidden>
+      <div class="section-heading"><div><p class="eyebrow">YOUR ROUTE</p><h2>Available trains</h2></div><span id="result-count" class="muted"></span></div>
+      <div id="results" class="train-list"></div>
+    </section>
+
+    <section class="manage-section">
+      <div><p class="eyebrow">MANAGE YOUR JOURNEY</p><h2>Check Status or Cancel</h2><p class="muted">Enter your booking ID to view ticket details or cancel your reservation.</p></div>
+      <form id="cancel-form" class="cancel-form">
+        <label for="booking-id">Booking ID</label>
+        <div class="inline-fields">
+          <input id="booking-id" type="number" min="1" required placeholder="e.g. 6">
+          <button id="view-booking-btn" class="secondary" type="button">View ticket</button>
+          <button class="btn-danger" type="submit">Cancel booking</button>
+        </div>
+      </form>
+    </section>
+    <div id="booking-details-box" class="ticket-card" hidden></div>
+
+    <section class="recent-bookings-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">DATABASE RESERVATION LOG</p>
+          <h2>All Bookings</h2>
+        </div>
+        <button id="refresh-bookings-btn" class="secondary" type="button" style="min-height:36px; padding:0 12px; font-size:.8rem;">Refresh Log</button>
+      </div>
+      <div id="recent-bookings-list" class="recent-bookings-list"></div>
+    </section>
+    <footer>Seat availability can change until a booking is confirmed.</footer>
+  </main>
+  <dialog id="booking-dialog">
+    <form id="booking-form" method="dialog">
+      <button class="close" type="button" id="close-dialog" aria-label="Close">×</button>
+      <p class="eyebrow">COMPLETE YOUR BOOKING</p><h2 id="dialog-title">Choose seats</h2>
+      
+      <!-- Class Filter Tabs -->
+      <div class="class-filter-container">
+        <div class="class-filter-label">TRAVEL CLASS</div>
+        <div id="class-filter-bar" class="class-filter-bar"></div>
+      </div>
+
+      <!-- Seat Legend -->
+      <div class="seat-legend">
+        <span class="legend-item"><span class="legend-box free"></span> Available</span>
+        <span class="legend-item"><span class="legend-box selected"></span> Selected</span>
+        <span class="legend-item"><span class="legend-box occupied"></span> Booked</span>
+      </div>
+
+      <div id="seat-list" class="seat-list-grouped"></div>
+      <p id="selected-summary" class="muted">Select one or more available seats.</p>
+      <div class="form-grid">
+        <label>Passenger name<input name="passenger_name" maxlength="100" required></label>
+        <label>Email <span class="muted">(optional)</span><input name="email" type="email" maxlength="100"></label>
+        <label>Phone <span class="muted">(optional)</span><input name="phone_number" type="tel" maxlength="20"></label>
+        <label>Age <span class="muted">(optional)</span><input name="age" type="number" min="5" max="120"></label>
+      </div>
+      <button class="primary full" type="submit">Confirm booking</button>
+    </form>
+  </dialog>
+  <script src="script.js" defer></script>
+</body>
+</html>

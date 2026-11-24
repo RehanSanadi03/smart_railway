@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Railway Management System - DBMS Project Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm 18mm 16mm;
+  }
+  @media print {
+    body { font-size: 10.5pt; line-height: 1.45; }
+    .page-break { page-break-before: always; }
+    h1, h2, h3 { page-break-after: avoid; }
+    table, pre { page-break-inside: avoid; }
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1a202c;
+    background: #fff;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+  }
+  .header-box {
+    border-bottom: 3px solid #1a5632;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .sub-tag {
+    color: #1a5632;
+    font-size: 11pt;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0 0 6px 0;
+  }
+  h1 {
+    font-size: 24pt;
+    margin: 0 0 8px 0;
+    color: #0f2d1a;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .meta-bar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9.5pt;
+    color: #4a5568;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid #e2e8f0;
+  }
+  h2 {
+    font-size: 14pt;
+    color: #1a5632;
+    border-left: 4px solid #1a5632;
+    padding-left: 10px;
+    margin-top: 26px;
+    margin-bottom: 10px;
+  }
+  h3 {
+    font-size: 11.5pt;
+    color: #2d3748;
+    margin-top: 16px;
+    margin-bottom: 6px;
+  }
+  p {
+    margin: 0 0 10px 0;
+    color: #2d3748;
+  }
+  ul, ol {
+    margin: 0 0 12px 0;
+    padding-left: 22px;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 18px 0;
+    font-size: 9pt;
+  }
+  th, td {
+    border: 1px solid #cbd5e0;
+    padding: 7px 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #f0f7f3;
+    color: #1a5632;
+    font-weight: 700;
+  }
+  tr:nth-child(even) td {
+    background-color: #fafbfb;
+  }
+  code {
+    font-family: Consolas, Monaco, "Courier New", monospace;
+    background-color: #edf2f7;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 9pt;
+    color: #802020;
+  }
+  pre {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    overflow-x: auto;
+    font-family: Consolas, Monaco, "Courier New", monospace;
+    font-size: 8.5pt;
+    line-height: 1.4;
+    color: #1a202c;
+    margin: 10px 0 14px 0;
+  }
+  .highlight-card {
+    background: #f7faf8;
+    border-left: 4px solid #38a169;
+    padding: 10px 14px;
+    margin: 12px 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 9.5pt;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 8pt;
+    font-weight: 700;
+    background: #e2e8f0;
+  }
+  .badge-primary { background: #d1fae5; color: #065f46; }
+</style>
+</head>
+<body>
+
+<div class="header-box">
+  <div class="sub-tag">Database Management Systems — Academic Project Report</div>
+  <h1>Smart Railway Management System</h1>
+  <div class="meta-bar">
+    <span><strong>Course:</strong> Database Management Systems (DBMS)</span>
+    <span><strong>Architecture:</strong> MySQL 8.0 (InnoDB) · Python Flask · HTML5/ES6</span>
+    <span><strong>Date:</strong> November 2026</span>
+  </div>
+</div>
+
+<h2>1. Executive Summary & System Overview</h2>
+<p>
+  The <strong>Smart Railway Management System</strong> is a full-featured relational database management application designed to handle scheduled passenger train networks, dynamic route routing, multi-tier coach capacity, live seat inventory allocation, and transactional ticket booking.
+</p>
+<p>
+  The project is architected with a strict 3-tier architecture:
+</p>
+<ul>
+  <li><strong>Database Layer (MySQL 8.0 InnoDB)</strong>: Enforces schema constraints, candidate keys, foreign key referential integrity, and pessimistic row locking for concurrency control.</li>
+  <li><strong>Application Layer (Python Flask API)</strong>: Implements business transactions, route distance calculations, dynamic fare evaluation, and parameterized SQL statements.</li>
+  <li><strong>Presentation Layer (Modern Web Interface)</strong>: Provides reactive two-way train route search, class-based seat visualization, instant ticket rendering, and reservation cancellations.</li>
+</ul>
+
+<h2>2. Relational Database Schema & Table Specifications</h2>
+<p>The operational railway domain is modeled into <strong>10 strongly normalized relational tables</strong>:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Table Name</th>
+      <th>Primary Key</th>
+      <th>Foreign Keys & References</th>
+      <th>Purpose & Key Constraints</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>station</code></td>
+      <td><code>station_id</code></td>
+      <td>None</td>
+      <td>Master stations directory across India. Unique station codes (e.g. SBC, NDLS).</td>
+    </tr>
+    <tr>
+      <td><code>train</code></td>
+      <td><code>train_id</code></td>
+      <td>None</td>
+      <td>Master train directory with unique train numbers and service classifications.</td>
+    </tr>
+    <tr>
+      <td><code>train_stop</code></td>
+      <td><code>(train_id, station_id)</code></td>
+      <td><code>train_id</code> &rarr; <code>train</code><br><code>station_id</code> &rarr; <code>station</code></td>
+      <td>Ordered route timetable with arrival/departure times and cumulative km from origin.</td>
+    </tr>
+    <tr>
+      <td><code>coach</code></td>
+      <td><code>coach_id</code></td>
+      <td><code>train_id</code> &rarr; <code>train</code></td>
+      <td>Physical coaches per train (H1, A1, B1, S1, C1, E1). Unique <code>(train_id, coach_number)</code>.</td>
+    </tr>
+    <tr>
+      <td><code>seat</code></td>
+      <td><code>seat_id</code></td>
+      <td><code>coach_id</code> &rarr; <code>coach</code></td>
+      <td>Numbered seats (1-72) with berth assignments. Check: <code>1 &le; seat_number &le; 72</code>.</td>
+    </tr>
+    <tr>
+      <td><code>train_run</code></td>
+      <td><code>run_id</code></td>
+      <td><code>train_id</code> &rarr; <code>train</code></td>
+      <td>Specific dated instance of a train run. Unique <code>(train_id, journey_date)</code>.</td>
+    </tr>
+    <tr>
+      <td><code>run_seat</code></td>
+      <td><code>run_seat_id</code></td>
+      <td><code>run_id</code> &rarr; <code>train_run</code><br><code>seat_id</code> &rarr; <code>seat</code></td>
+      <td>Real-time reservation availability per seat per run. Check: <code>Available, Booked, Blocked</code>.</td>
+    </tr>
+    <tr>
+      <td><code>passenger</code></td>
+      <td><code>passenger_id</code></td>
+      <td>None</td>
+      <td>Passenger master record. Unique email and phone. Check: <code>5 &le; age &le; 120</code>.</td>
+    </tr>
+    <tr>
+      <td><code>booking</code></td>
+      <td><code>booking_id</code></td>
+      <td><code>passenger_id</code> &rarr; <code>passenger</code><br><code>run_id</code> &rarr; <code>train_run</code></td>
+      <td>Reservation header with timestamp, status (Confirmed/Cancelled), and total fare.</td>
+    </tr>
+    <tr>
+      <td><code>booking_seat</code></td>
+      <td><code>booking_seat_id</code></td>
+      <td><code>booking_id</code> &rarr; <code>booking</code><br><code>seat_id</code> &rarr; <code>seat</code></td>
+      <td>Bridge table linking individual seats to transactions with seat-level fare.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<h2>3. Database Normalization Analysis (1NF to 3NF/BCNF)</h2>
+<p>
+  A primary requirement in database design is eliminating data redundancy, insertion anomalies, update anomalies, and deletion anomalies through formal normalization.
+</p>
+
+<h3>3.1 First Normal Form (1NF)</h3>
+<ul>
+  <li><strong>Atomic Values Only</strong>: Every attribute contains only indivisible, single scalar values. For instance, rather than storing comma-separated seat numbers like <code>"S1-1, S1-2"</code> inside a booking column, individual seats are broken into discrete rows in the bridge table <code>booking_seat</code>.</li>
+  <li><strong>Unique Row Identification</strong>: Every table possesses an explicit primary key ensuring no duplicate tuples exist.</li>
+  <li><strong>No Repeating Groups</strong>: Route stops, coaches, and seats exist as separate relational rows rather than static repeating columns like <code>stop_1, stop_2, stop_3</code>.</li>
+</ul>
+
+<h3>3.2 Second Normal Form (2NF)</h3>
+<p>A relation is in 2NF if it satisfies 1NF and <strong>no non-prime attribute is partially dependent on any candidate key</strong>:</p>
+<ul>
+  <li>In <code>train_stop</code>, the primary key is composite: <code>(train_id, station_id)</code>.
+    The non-prime attributes are <code>stop_number</code>, <code>arrival_time</code>, <code>departure_time</code>, and <code>distance_from_source</code>.
+    None of these attributes depend solely on <code>train_id</code> (a train has different arrival times at different stations) or solely on <code>station_id</code> (a station has different trains arriving). They depend fully on the composite key.
+  </li>
+  <li>Station master data (<code>station_name</code>, <code>city</code>, <code>state</code>) was factored out into <code>station</code>. If stored in <code>train_stop</code>, it would be partially dependent on <code>station_id</code>, violating 2NF.</li>
+  <li>In <code>booking_seat</code>, the composite candidate key is <code>(booking_id, seat_id)</code>, which determines the individual <code>seat_fare</code> without partial dependency.</li>
+</ul>
+
+<h3>3.3 Third Normal Form (3NF) and BCNF</h3>
+<p>A relation is in 3NF if it satisfies 2NF and <strong>no non-prime attribute is transitively dependent on a candidate key</strong> (i.e. $X \rightarrow Y$ and $Y \rightarrow Z$ where $Z$ is non-prime):</p>
+<ul>
+  <li><strong>Separation of Train and Coach</strong>: If coach configuration were held in <code>train</code>, a change in a coach type would trigger update anomalies. Separating them into <code>coach</code> ensures non-prime coach attributes depend solely on <code>coach_id</code>.</li>
+  <li><strong>Separation of Coach and Seat</strong>: Storing berth types (Lower, Upper, Middle) in <code>run_seat</code> would introduce a transitive dependency via <code>seat_id &rarr; coach_id</code>. By defining <code>seat</code> independently, each seat's structural attributes depend only on <code>seat_id</code>.</li>
+  <li><strong>Separation of Passenger and Booking</strong>: <code>booking</code> holds only <code>passenger_id</code>. Storing passenger contact information in <code>booking</code> would create a transitive dependency on <code>passenger_id</code>.</li>
+</ul>
+
+<h2>4. Key DBMS Concepts Implemented</h2>
+
+<div class="highlight-card">
+  <strong>Transaction ACID Compliance in Code:</strong> Every booking execution locks candidate inventory records using pessimistic concurrency control (<code>FOR UPDATE</code>), performs validation, commits all insertions/updates as a single atomic unit, or rolls back entirely on failure.
+</div>
+
+<h3>4.1 ACID Transaction Processing</h3>
+<pre><code>connection.start_transaction()
+try:
+    # 1. Pessimistic Row Locking on inventory seats
+    cursor.execute("SELECT run_seat_id, seat_status FROM run_seat WHERE ... FOR UPDATE")
+    
+    # 2. Enforce business rules & calculate distance-based pricing
+    ...
+    
+    # 3. Insert passenger (or reuse verified identity)
+    # 4. Insert booking header
+    # 5. Insert booking_seat records
+    # 6. Update run_seat status from 'Available' to 'Booked'
+    
+    connection.commit()  # Atomicity & Durability guaranteed
+except Exception:
+    connection.rollback() # Full rollback preserving database state</code></pre>
+
+<ul>
+  <li><strong>Atomicity</strong>: Guarantees that passenger resolution, ticket creation, seat association, and inventory state transitions occur together or not at all.</li>
+  <li><strong>Consistency</strong>: Database integrity constraints (`total_fare &ge; 0`, `age &ge; 5`, `seat_status IN (...)`) are verified by InnoDB at the storage layer.</li>
+  <li><strong>Isolation</strong>: Pessimistic row locking (`FOR UPDATE`) eliminates race conditions where two simultaneous users try to book the same seat.</li>
+  <li><strong>Durability</strong>: Committed transactions are permanently written to InnoDB write-ahead redo logs.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<h2>5. Multi-Table JOIN Architectures & SQL Implementations</h2>
+
+<h3>5.1 Route Search via Self-Join on `train_stop`</h3>
+<p>To detect directional connectivity between an origin station $S_1$ and destination $S_2$, a relational self-join on <code>train_stop</code> matches both stops on the same train while enforcing stop sequence order ($stop_1 < stop_2$):</p>
+
+<pre><code>SELECT 
+    r.run_id, t.train_number, t.train_name, t.train_type, r.journey_date,
+    s1.station_name AS origin_name, ts1.departure_time,
+    s2.station_name AS destination_name, ts2.arrival_time,
+    (ts2.distance_from_source - ts1.distance_from_source) AS distance_km,
+    SUM(CASE WHEN rs.seat_status = 'Available' THEN 1 ELSE 0 END) AS available_seats
+FROM train_run r
+JOIN train t ON t.train_id = r.train_id
+JOIN train_stop ts1 ON ts1.train_id = t.train_id
+JOIN station s1 ON s1.station_id = ts1.station_id
+JOIN train_stop ts2 ON ts2.train_id = t.train_id
+JOIN station s2 ON s2.station_id = ts2.station_id
+LEFT JOIN run_seat rs ON rs.run_id = r.run_id
+WHERE r.journey_date = '2026-11-25'
+  AND s1.station_code = 'SBC' AND s2.station_code = 'NDLS'
+  AND ts1.stop_number < ts2.stop_number
+GROUP BY r.run_id, t.train_id, t.train_number, t.train_name, t.train_type,
+         r.journey_date, s1.station_name, ts1.departure_time,
+         s2.station_name, ts2.arrival_time,
+         ts1.distance_from_source, ts2.distance_from_source
+ORDER BY ts1.departure_time;</code></pre>
+
+<h3>5.2 Six-Table Relational Ticket Generation</h3>
+<p>Reconstructs the complete passenger ticket with allocated coaches, berths, train info, and total fare:</p>
+
+<pre><code>SELECT 
+    b.booking_id, b.booking_date, b.booking_status, b.total_fare,
+    p.passenger_name, p.email, p.phone_number,
+    r.journey_date, t.train_number, t.train_name, t.train_type,
+    GROUP_CONCAT(CONCAT(c.coach_number, '-', s.seat_number, ' (', c.coach_type, ', ', s.berth_type, ')')
+                 ORDER BY c.coach_number, s.seat_number SEPARATOR ', ') AS seats
+FROM booking b
+JOIN passenger p ON p.passenger_id = b.passenger_id
+JOIN train_run r ON r.run_id = b.run_id
+JOIN train t ON t.train_id = r.train_id
+JOIN booking_seat bs ON bs.booking_id = b.booking_id
+JOIN seat s ON s.seat_id = bs.seat_id
+JOIN coach c ON c.coach_id = s.coach_id
+WHERE b.booking_id = ?
+GROUP BY b.booking_id, b.booking_date, b.booking_status, b.total_fare,
+         p.passenger_name, p.email, p.phone_number, r.journey_date,
+         t.train_number, t.train_name, t.train_type;</code></pre>
+
+<h2>6. Summary of Engineering Milestones Completed</h2>
+<ul>
+  <li><strong>Full Two-Way Indian Railway Network</strong>: Seeded return directions and intermediate schedules for Karnataka Express, Shatabdi Express, Tejas Rajdhani Express, Deccan Express, Gol Gumbaz Express, and Vishwamanava Express across 53 stations.</li>
+  <li><strong>Structured Travel Classes</strong>: Configured distinct travel classes across coaches: <code>1A</code> (AC First Class), <code>2A</code> (AC 2 Tier), <code>3A</code> (AC 3 Tier), <code>SL</code> (Sleeper), <code>CC</code> (AC Chair Car), and <code>EC</code> (Executive Chair Car).</li>
+  <li><strong>Frontend User Interface</strong>: Interactive class filter tabs, grouped coach seat visualization with berth designations, instant booking status updates, and a live reservation log.</li>
+  <li><strong>Defensive Integrity Handling</strong>: Addressed null references in async event loops, repeat passenger identity lookups, and strict schema CHECK constraint validations.</li>
+  <li><strong>Comprehensive Testing</strong>: Fully verified automated test suite in <code>test_system.py</code> exercising search, seat loading, concurrency locking, ticket inspection, and cancellations.</li>
+</ul>
+
+</body>
+</html>
